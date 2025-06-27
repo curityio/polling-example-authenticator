@@ -22,6 +22,9 @@ A custom authenticator plugin for the [Curity Identity Server](https://curity.io
 To build and deploy the plugin to your Curity Identity Server:
 
 ```bash
+git clone git@github.com:curityio/polling-example-authenticator.git
+cd polling-example-authenticator
+chmod +x ./deploy.sh
 ./deploy.sh
 ```
 
@@ -31,7 +34,10 @@ This script will:
 2. Prompt for the Curity server's installation path if `IDSVR_HOME` is not already set
 3. Copy the plugin JAR and required dependencies into the appropriate plugin directory
 
-Once complete, restart the Curity Identity Server to load the new authenticator.
+Once complete, restart the Curity Identity Server to load the new Polling Example authenticator.
+
+## Start Mock API Server
+Start the [mock polling API](https://github.com/curityio/mock-polling-api) by following the instructions in the repo.
 
 ## Additional Resources
 
@@ -39,3 +45,5 @@ Once complete, restart the Curity Identity Server to load the new authenticator.
 - [Server-Provided Dependencies](https://curity.io/docs/idsvr/latest/developer-guide/plugins/index.html#server-provided-dependencies-1)
 - [Curity.io](https://curity.io/)
 
+> 💡 **Note for Windows users**:  
+> This script requires a Unix-like shell environment (e.g., WSL, Git Bash, or Cygwin) to run. It will not work in PowerShell or Command Prompt as-is.
