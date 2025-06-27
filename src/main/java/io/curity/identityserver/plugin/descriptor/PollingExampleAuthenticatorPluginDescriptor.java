@@ -16,7 +16,6 @@
 
 package io.curity.identityserver.plugin.descriptor;
 
-
 import com.google.common.collect.ImmutableMap;
 import io.curity.identityserver.plugin.authentication.handlers.CancelAuthenticationRequestHandler;
 import io.curity.identityserver.plugin.authentication.handlers.FailedAuthenticationRequestHandler;
@@ -28,19 +27,23 @@ import se.curity.identityserver.sdk.plugin.descriptor.AuthenticatorPluginDescrip
 
 import java.util.Map;
 
-public final class PollingExampleAuthenticatorPluginDescriptor implements AuthenticatorPluginDescriptor<PollingPluginConfig> {
+public final class PollingExampleAuthenticatorPluginDescriptor implements AuthenticatorPluginDescriptor<PollingPluginConfig>
+{
     @Override
-    public String getPluginImplementationType() {
+    public String getPluginImplementationType()
+    {
         return "polling-example";
     }
 
     @Override
-    public Class<? extends PollingPluginConfig> getConfigurationType() {
+    public Class<? extends PollingPluginConfig> getConfigurationType()
+    {
         return PollingPluginConfig.class;
     }
 
     @Override
-    public Map<String, Class<? extends AuthenticatorRequestHandler<?>>> getAuthenticationRequestHandlerTypes() {
+    public Map<String, Class<? extends AuthenticatorRequestHandler<?>>> getAuthenticationRequestHandlerTypes()
+    {
         return ImmutableMap.of("index", StartAuthenticatorRequestHandler.class,
                 "wait", WaitAuthenticationRequestHandler.class,
                 "failed", FailedAuthenticationRequestHandler.class,

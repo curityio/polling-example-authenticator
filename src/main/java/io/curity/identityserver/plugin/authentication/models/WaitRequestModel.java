@@ -21,28 +21,34 @@ import se.curity.identityserver.sdk.web.Request;
 
 import java.util.Optional;
 
-public final class WaitRequestModel {
+public final class WaitRequestModel
+{
     @Valid
     private final Post _postRequestModel;
 
-    public WaitRequestModel(Request request) {
+    public WaitRequestModel(Request request)
+    {
         _postRequestModel = request.isPostRequest() ? new Post(request) : null;
     }
 
-    public Post getPostRequestModel() {
+    public Post getPostRequestModel()
+    {
         return Optional.ofNullable(_postRequestModel).orElseThrow(() ->
                 new IllegalStateException("Post RequestModel does not exist"));
     }
 
-    public static final class Post {
+    public static final class Post
+    {
         private final boolean _isPollingDone;
 
-        public Post(Request request) {
+        public Post(Request request)
+        {
             _isPollingDone = Optional.ofNullable(request.getFormParameterValueOrError("_pollingDone"))
                     .orElse("").equals("true");
         }
 
-        public boolean isPollingDone() {
+        public boolean isPollingDone()
+        {
             return _isPollingDone;
         }
     }

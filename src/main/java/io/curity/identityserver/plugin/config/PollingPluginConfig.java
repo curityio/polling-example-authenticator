@@ -16,7 +16,6 @@
 
 package io.curity.identityserver.plugin.config;
 
-
 import se.curity.identityserver.sdk.config.Configuration;
 import se.curity.identityserver.sdk.config.annotation.DefaultInteger;
 import se.curity.identityserver.sdk.config.annotation.DefaultService;
@@ -27,8 +26,8 @@ import se.curity.identityserver.sdk.service.Json;
 import se.curity.identityserver.sdk.service.SessionManager;
 import se.curity.identityserver.sdk.service.authentication.AuthenticatorInformationProvider;
 
-
-public interface PollingPluginConfig extends Configuration {
+public interface PollingPluginConfig extends Configuration
+{
 
     @DefaultInteger(300)
     @Description("Maximum time (in seconds), the authenticator waits for a callback response")

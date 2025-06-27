@@ -23,31 +23,37 @@ import se.curity.identityserver.sdk.web.Request;
 
 import java.util.Optional;
 
-public final class StartAuthenticatorRequestModel {
+public final class StartAuthenticatorRequestModel
+{
     @Nullable
     @Valid
     private final Post _postRequestModel;
 
-    public StartAuthenticatorRequestModel(Request request) {
+    public StartAuthenticatorRequestModel(Request request)
+    {
         _postRequestModel = request.isPostRequest() ? new Post(request) : null;
     }
 
-    public Post getPostRequestModel() {
+    public Post getPostRequestModel()
+    {
         return Optional.ofNullable(_postRequestModel).orElseThrow(() ->
-                new RuntimeException("Post RequestModel does not exist"));
+                new IllegalStateException("Post RequestModel does not exist"));
     }
 
-    public static class Post {
+    public static class Post
+    {
         static final String USERNAME_PARAM = "username";
 
         @NotBlank(message = "validation.error.username.required")
         private final String _username;
 
-        public Post(Request request) {
+        public Post(Request request)
+        {
             _username = request.getFormParameterValueOrError(USERNAME_PARAM);
         }
 
-        public String getUsername() {
+        public String getUsername()
+        {
             return _username;
         }
     }

@@ -22,38 +22,49 @@ import se.curity.identityserver.sdk.web.Request;
 
 import java.util.List;
 
-public final class FailedRequestModel {
+public final class FailedRequestModel
+{
     @Valid
     private final Get _getRequestModel;
 
-    public FailedRequestModel(Request request) {
+    public FailedRequestModel(Request request)
+    {
         _getRequestModel = request.isGetRequest() ? new Get(request) : null;
     }
 
-    public Get getGetRequestModel() {
-        if (_getRequestModel == null) {
+    public Get getGetRequestModel()
+    {
+        if (_getRequestModel == null)
+        {
             throw new IllegalStateException("Get RequestModel is not available for this request type");
         }
         return _getRequestModel;
     }
 
-    public static final class Get {
+    public static final class Get
+    {
         private final String _errorMessage;
 
-        Get(Request request) {
+        Get(Request request)
+        {
             List<String> messages = (List<String>) request.getQueryParameterValues("_errorMessage");
-            if (messages != null && !messages.isEmpty()) {
-                if (messages.size() > 1) {
+            if (messages != null && !messages.isEmpty())
+            {
+                if (messages.size() > 1)
+                {
                     throw new IllegalArgumentException("Multiple error messages provided; only one is allowed");
                 }
                 _errorMessage = messages.getFirst();
-            } else {
+            }
+            else
+            {
                 _errorMessage = "unknown";
             }
         }
 
         @NotEmpty
-        public String getErrorMessage() {
+        public String getErrorMessage()
+        {
             return _errorMessage;
         }
     }

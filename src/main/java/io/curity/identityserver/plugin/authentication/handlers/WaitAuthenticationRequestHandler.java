@@ -48,7 +48,8 @@ import static se.curity.identityserver.sdk.http.HttpStatus.ACCEPTED;
 import static se.curity.identityserver.sdk.http.HttpStatus.OK;
 import static se.curity.identityserver.sdk.web.Response.ResponseModelScope.NOT_FAILURE;
 
-public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHandler<WaitRequestModel> {
+public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHandler<WaitRequestModel>
+{
     private static final Logger _logger = LoggerFactory.getLogger(WaitAuthenticationRequestHandler.class);
     private static final String NOTIFICATION_URL = "http://localhost:3000/status";
     private static final String STATUS_APPROVED = "approved";
@@ -61,7 +62,8 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
     private final Json _json;
     private final ExceptionFactory _exceptionFactory;
 
-    public WaitAuthenticationRequestHandler(PollingPluginConfig config) {
+    public WaitAuthenticationRequestHandler(PollingPluginConfig config)
+    {
         _sessionManager = config.getSessionManager();
         _authInfoProvider = config.getAuthenticatorInformationProvider();
         _pollMaxWaitTimeInSeconds = config.getPollMaxWaitTime();
@@ -71,7 +73,8 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
     }
 
     @Override
-    public Optional<AuthenticationResult> get(WaitRequestModel waitRequestModel, Response response) {
+    public Optional<AuthenticationResult> get(WaitRequestModel waitRequestModel, Response response)
+    {
         URI authUri = _authInfoProvider.getFullyQualifiedAuthenticationUri();
         Map<String, Object> model = Map.of(
                 "_restartUrl", authUri.getPath(),
@@ -83,28 +86,28 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
     }
 
     @Override
-    public Optional<AuthenticationResult> post(WaitRequestModel waitRequestModel, Response response) {
-
-        // query the status of the request
+    public Optional<AuthenticationResult> post(WaitRequestModel waitRequestModel, Response response)
+    {
+        _logger.debug("Processing POST request for WaitAuthenticationRequestHandler");
         String requestId = Optional.ofNullable(_sessionManager.get("requestId"))
                 .map(attribute -> attribute.getOptionalValueOfType(String.class))
                 .orElse("");
-
+        // Query the status of the request
         HttpResponse statusResponse = _httpClient.request(URI.create(NOTIFICATION_URL + "/" + requestId)).get().response();
         String status = (String) statusResponse.body(HttpResponse.asJsonObject(_json)).get("status");
 
         _logger.debug("Request status: {}", status);
 
+        if (waitRequestModel.getPostRequestModel().isPollingDone())
+        {
+            _logger.debug("Polling has already been done, complete the authentication process.");
 
-        if (waitRequestModel.getPostRequestModel().isPollingDone()) {
-            _logger.warn("Polling has already been done, complete the authentication process.");
-
-            if (STATUS_DECLINED.equals(status)) {
+            if (STATUS_DECLINED.equals(status))
+            {
                 throw _exceptionFactory.redirectException(
                         _authInfoProvider.getFullyQualifiedAuthenticationUri() + "/failed?_errorMessage=user_declined"
                 );
             }
-
 
             String username = Optional.ofNullable(_sessionManager.get("username"))
                     .map(attribute -> attribute.getOptionalValueOfType(String.class))
@@ -115,10 +118,13 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
                     ContextAttributes.of(Attributes.of(Attribute.of("iat", new Date().getTime()))))));
         }
 
-        if (STATUS_APPROVED.equals(status) || STATUS_DECLINED.equals(status)) {
+        if (STATUS_APPROVED.equals(status) || STATUS_DECLINED.equals(status))
+        {
             _logger.debug("Polling ended with status '{}', sending ACCEPTED", status);
             response.setHttpStatus(ACCEPTED);
-        } else {
+        }
+        else
+        {
             _logger.debug("Still waiting for user approval...");
         }
 
@@ -126,7 +132,8 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
     }
 
     @Override
-    public WaitRequestModel preProcess(Request request, Response response) {
+    public WaitRequestModel preProcess(Request request, Response response)
+    {
         response.setResponseModel(ResponseModel.templateResponseModel(Collections.emptyMap(),
                 "wait/index"), NOT_FAILURE);
         return new WaitRequestModel(request);

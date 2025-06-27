@@ -20,24 +20,29 @@ import se.curity.identityserver.sdk.web.ResponseModel;
 
 import java.util.Map;
 
-public final class WaitResponseModel implements ResponseModel {
+public final class WaitResponseModel implements ResponseModel
+{
     private final Map<String, Object> _map;
 
-    public WaitResponseModel(Map<String, Object> map) {
+    public WaitResponseModel(Map<String, Object> map)
+    {
         _map = map;
     }
 
-    public String getRestartUrl() {
+    public String getRestartUrl()
+    {
 
         return _map.get("_restartUrl").toString();
     }
 
-    public String getFailureUrl() {
+    public String getFailureUrl()
+    {
         return _map.get("_failureUrl").toString();
     }
 
     @Override
-    public Map<String, Object> getViewData() {
+    public Map<String, Object> getViewData()
+    {
         return _map;
     }
 }

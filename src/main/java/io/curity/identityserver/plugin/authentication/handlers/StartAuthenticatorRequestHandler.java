@@ -16,7 +16,6 @@
 
 package io.curity.identityserver.plugin.authentication.handlers;
 
-
 import io.curity.identityserver.plugin.authentication.models.StartAuthenticatorRequestModel;
 import io.curity.identityserver.plugin.config.PollingPluginConfig;
 import org.slf4j.Logger;
@@ -43,7 +42,8 @@ import java.util.Optional;
 import static se.curity.identityserver.sdk.http.HttpStatus.BAD_REQUEST;
 import static se.curity.identityserver.sdk.web.Response.ResponseModelScope.NOT_FAILURE;
 
-public final class StartAuthenticatorRequestHandler implements AuthenticatorRequestHandler<StartAuthenticatorRequestModel> {
+public final class StartAuthenticatorRequestHandler implements AuthenticatorRequestHandler<StartAuthenticatorRequestModel>
+{
     private static final Logger _logger = LoggerFactory.getLogger(StartAuthenticatorRequestHandler.class);
     private static final URI NOTIFICATION_URI = URI.create("http://localhost:3000/send-notification");
 
@@ -53,7 +53,8 @@ public final class StartAuthenticatorRequestHandler implements AuthenticatorRequ
     private final Json _json;
     private final SessionManager _sessionManager;
 
-    public StartAuthenticatorRequestHandler(PollingPluginConfig config) {
+    public StartAuthenticatorRequestHandler(PollingPluginConfig config)
+    {
         _exceptionFactory = config.getExceptionFactory();
         _authInfoProvider = config.getAuthenticatorInformationProvider();
         _httpClient = config.getHttpClient();
@@ -62,14 +63,16 @@ public final class StartAuthenticatorRequestHandler implements AuthenticatorRequ
     }
 
     @Override
-    public Optional<AuthenticationResult> get(StartAuthenticatorRequestModel requestModel, Response response) {
+    public Optional<AuthenticationResult> get(StartAuthenticatorRequestModel requestModel, Response response)
+    {
         return Optional.empty();
     }
 
     @Override
-    public Optional<AuthenticationResult> post(StartAuthenticatorRequestModel requestModel, Response response) {
+    public Optional<AuthenticationResult> post(StartAuthenticatorRequestModel requestModel, Response response)
+    {
         String username = requestModel.getPostRequestModel().getUsername();
-        _logger.info("Initiating push authentication for user '{}'", username);
+        _logger.debug("Initiating push authentication for user '{}'", username);
 
         // Sending a mock push notification, waiting for user action, etc.
         Map<String, String> parameters = Map.of("username", username);
@@ -92,7 +95,8 @@ public final class StartAuthenticatorRequestHandler implements AuthenticatorRequ
     }
 
     @Override
-    public StartAuthenticatorRequestModel preProcess(Request request, Response response) {
+    public StartAuthenticatorRequestModel preProcess(Request request, Response response)
+    {
         response.setResponseModel(ResponseModel.templateResponseModel(Collections.emptyMap(), "authenticate/get"), NOT_FAILURE);
         response.setResponseModel(ResponseModel.templateResponseModel(Collections.emptyMap(), "authenticate/get"), BAD_REQUEST);
         return new StartAuthenticatorRequestModel(request);

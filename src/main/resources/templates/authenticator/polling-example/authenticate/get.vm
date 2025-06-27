@@ -44,7 +44,8 @@
            required
            value="$!username">
 
-    <button type="submit" class="button button-fullwidth button-primary">#message("${_templatePrefix}.view.submit")</button>
+    <button type="submit" class="button button-fullwidth button-primary">#message(
+        "${_templatePrefix}.view.submit")</button>
 </form>
 #end
 

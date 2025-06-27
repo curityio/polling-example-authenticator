@@ -34,19 +34,21 @@ import static se.curity.identityserver.sdk.web.Response.ResponseModelScope.NOT_F
 import static se.curity.identityserver.sdk.web.ResponseModel.mapResponseModel;
 import static se.curity.identityserver.sdk.web.ResponseModel.templateResponseModel;
 
-public class FailedAuthenticationRequestHandler implements AuthenticatorRequestHandler<FailedRequestModel> {
+public class FailedAuthenticationRequestHandler implements AuthenticatorRequestHandler<FailedRequestModel>
+{
 
     private final AuthenticatorInformationProvider _authInfoProvider;
     private final ExceptionFactory _exceptionFactory;
 
-    public FailedAuthenticationRequestHandler(PollingPluginConfig config) {
+    public FailedAuthenticationRequestHandler(PollingPluginConfig config)
+    {
         _authInfoProvider = config.getAuthenticatorInformationProvider();
         _exceptionFactory = config.getExceptionFactory();
-
     }
 
     @Override
-    public Optional<AuthenticationResult> get(FailedRequestModel failedRequestModel, Response response) {
+    public Optional<AuthenticationResult> get(FailedRequestModel failedRequestModel, Response response)
+    {
 
         FailedRequestModel.Get model = failedRequestModel.getGetRequestModel();
 
@@ -58,13 +60,14 @@ public class FailedAuthenticationRequestHandler implements AuthenticatorRequestH
     }
 
     @Override
-    public Optional<AuthenticationResult> post(FailedRequestModel failedRequestModel, Response response) {
+    public Optional<AuthenticationResult> post(FailedRequestModel failedRequestModel, Response response)
+    {
         throw _exceptionFactory.methodNotAllowed("HTTP POST not supported");
-
     }
 
     @Override
-    public FailedRequestModel preProcess(Request request, Response response) {
+    public FailedRequestModel preProcess(Request request, Response response)
+    {
         response.setResponseModel(templateResponseModel(ImmutableMap.of(),
                 "failed/index"), NOT_FAILURE);
         return new FailedRequestModel(request);
