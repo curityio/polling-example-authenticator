@@ -30,7 +30,7 @@ public interface PollingPluginConfig extends Configuration
 {
 
     @DefaultInteger(300)
-    @Description("Maximum time (in seconds), the authenticator waits for a callback response")
+    @Description("Maximum time (in seconds), the authenticator waits for a response")
     int getPollMaxWaitTime();
 
     @DefaultService
