@@ -37,7 +37,7 @@ This script will:
 Once complete, restart the Curity Identity Server to load the new Polling Example authenticator.
 
 ## Start Mock API Server
-Start the [mock polling API](https://github.com/curityio/mock-polling-api) by following the instructions in the repo.
+Start the [mock backend API](https://github.com/curityio/mock-backend-api) by following the instructions in the repo.
 
 ## Additional Resources
 
