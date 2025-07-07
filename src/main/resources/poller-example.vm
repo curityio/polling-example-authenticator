@@ -1,0 +1,122 @@
+#*
+ * Copyright (C) 2025 Curity AB. All rights reserved.
+ *
+ * The contents of this file are the property of Curity AB.
+ * You may not copy or use this file, in either source code
+ * or executable form, except in compliance with terms
+ * set by Curity AB.
+ *
+ * For further information, please contact Curity AB.
+ *
+ * For a full list of variables available in this template and their associated values, do the following:
+ *
+ * 1. Create a file called globals.vm in <installation-dir>/usr/share/templates/overrides/fragments
+ *
+ * 2. Add the following to this new file:
+ *
+ * <!--
+ *    All variables:
+ *    #foreach ($entry in $_context.entrySet())
+ *        $entry.key => $!entry.value
+ *    #end
+ * -->
+ *
+ * 3. Request this template again and view the HTML source code. All variables and their values will be shown in an
+ *    HTML comment at the top of the file.
+ *
+ * For more information about using the Velocity templating language, refer to
+ * http://velocity.apache.org/engine/devel/user-guide.html.
+ *#
+
+## Set default maxWaitTime (in seconds) if not provided
+#if ( !$_maxWaitTime )
+    #set ( $_maxWaitTime = 300 )
+#end
+
+## Set default pollInterval (in seconds) if not provided
+#if ( !$_pollInterval )
+    #set ( $_pollInterval = 2 )
+#end
+
+## Include jQuery fragment
+#parse("fragments/jquery")
+
+## Include Curity JavaScript library
+<script src="$_staticResourceRootPath/assets/js/curity.js"></script>
+
+<script type="text/javascript" $!nonceAttr>
+    // Initialize a Curity authenticator polling object
+    se.curity.authenticator = { polling: {} };
+
+    se.curity.authenticator.polling.start = function () {
+        var failed = false;
+
+        // Log Velocity variables for debugging
+        console.debug("Velocity Variables:", {
+            maxWaitTime: "$_maxWaitTime",
+            pollInterval: "$_pollInterval",
+            pollUrl: "$!_pollUrl",
+            restartUrl: "$!_restartUrl",
+            failureUrl: "${_failureUrl}",
+            staticResourceRootPath: "$_staticResourceRootPath"
+        });
+
+        // Failure handler
+        const handleFailure = function (error) {
+            if (!failed) {
+                failed = true;
+                try {
+                    if (error && error.readyState !== 0) {
+                        window.location.replace("${_failureUrl}?_errorMessage=" + error);
+                    } else {
+                        console.error("Polling failed:", error);
+                        window.location.replace("${failureUrl}?_errorMessage=unknown_error");
+                    }
+                } catch (e) {
+                    console.error("Error in failure handler:", e);
+                }
+            }
+        };
+
+        // Timeout handler
+        const handleTimeout = function () {
+            handleFailure("authTimeout");
+        };
+
+        // Success handler
+        const handleSuccess = function () {
+            try {
+                const form = document.getElementById("pollingDone");
+                if (form) {
+                    form.submit();
+                } else {
+                    console.error("Polling form not found");
+                    handleFailure("form_not_found");
+                }
+            } catch (e) {
+                console.error("Error in success handler:", e);
+                handleFailure(e);
+            }
+        };
+
+        // Polling configuration
+        const pollSettings = {
+            url: "$!_pollUrl",
+            pollInterval: $_pollInterval,
+            maxWaitTime: $_maxWaitTime ,
+            restartUrl: "$!_restartUrl",
+            onTimeout: handleTimeout,
+            onFailure: handleFailure,
+            onSuccess: handleSuccess
+        };
+
+        console.error("Poll settings :", pollSettings);
+        try {
+            // Start polling with initial delay of 2 seconds
+            return se.curity.utils.poller.startPolling(2, pollSettings);
+        } catch (err) {
+            console.error("Error starting polling:", err);
+            handleFailure(err);
+        }
+    };
+</script>

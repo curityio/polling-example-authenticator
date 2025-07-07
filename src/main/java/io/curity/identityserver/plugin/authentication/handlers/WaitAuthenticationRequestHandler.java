@@ -55,7 +55,8 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
     private static final String STATUS_APPROVED = "approved";
     private static final String STATUS_DECLINED = "declined";
 
-    private final Integer _pollMaxWaitTimeInSeconds;
+    private final int _pollMaxWaitTimeInSeconds;
+    private final int _pollIntervalInSeconds ;
     private final SessionManager _sessionManager;
     private final AuthenticatorInformationProvider _authInfoProvider;
     private final HttpClient _httpClient;
@@ -67,6 +68,7 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
         _sessionManager = config.getSessionManager();
         _authInfoProvider = config.getAuthenticatorInformationProvider();
         _pollMaxWaitTimeInSeconds = config.getPollMaxWaitTime();
+        _pollIntervalInSeconds = config.getPollingInterval();
         _httpClient = config.getHttpClient();
         _json = config.getJson();
         _exceptionFactory = config.getExceptionFactory();
@@ -79,7 +81,8 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
         Map<String, Object> model = Map.of(
                 "_restartUrl", authUri.getPath(),
                 "_failureUrl", authUri + "/failed",
-                "_maxWaitTime", _pollMaxWaitTimeInSeconds
+                "_maxWaitTime", _pollMaxWaitTimeInSeconds,
+                "_pollInterval", _pollIntervalInSeconds
         );
         response.setResponseModel(new WaitResponseModel(model), OK);
         return Optional.empty();
