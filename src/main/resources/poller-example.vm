@@ -110,7 +110,6 @@
             onSuccess: handleSuccess
         };
 
-        console.error("Poll settings :", pollSettings);
         try {
             // Start polling with initial delay of 2 seconds
             return se.curity.utils.poller.startPolling(2, pollSettings);
