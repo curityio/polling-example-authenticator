@@ -54,14 +54,15 @@
         logger.debug("Starting authenticator polling...");
 
         // Log Velocity variables for debugging
-        logger.debug("Velocity Variables:", {
+        logger.debug("Velocity Variables:" + JSON.stringify({
             maxWaitTime: "$_maxWaitTime",
             pollInterval: "$_pollInterval",
             pollUrl: "$!_pollUrl",
             restartUrl: "$!_restartUrl",
             failureUrl: "${_failureUrl}",
             staticResourceRootPath: "$_staticResourceRootPath"
-        });
+        }));
+
 
         // Failure handler
         const handleFailure = function (error) {
