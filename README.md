@@ -36,6 +36,9 @@ This script will:
 
 Once complete, restart the Curity Identity Server to load the new Polling Example authenticator.
 
+> 💡 **Note for Windows users**:  
+> This script requires a Unix-like shell environment (e.g., WSL, Git Bash, or Cygwin) to run. It will not work in PowerShell or Command Prompt as-is.
+
 ## Start Mock API Server
 Start the [mock backend API](https://github.com/curityio/mock-backend-api) by following the instructions in the repo.
 
