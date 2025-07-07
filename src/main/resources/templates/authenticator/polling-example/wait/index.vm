@@ -46,7 +46,7 @@
     </div>
 </div>
 
-    #parse("fragments/generic-poller")
+    #parse("fragments/poller-example")
 <script type="text/javascript" $!nonceAttr>
     jQuery(document).ready(function () {
         document.forms["cancel"].onsubmit = se.curity.authenticator.polling.start();

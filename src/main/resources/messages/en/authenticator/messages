@@ -28,3 +28,4 @@ polling-example.failed.view.button.retry=Restart
 polling-example.failed.view.title=Login Failed
 polling-example.failed.user_cancelled=User Cancelled
 polling-example.failed.user_declined=User Declined
+polling-example.failed.authTimeout=Authentication did not take place within the allowable time limit.

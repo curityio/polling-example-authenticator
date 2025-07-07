@@ -21,5 +21,12 @@ mkdir -p "$PLUGIN_DIR"
 cp target/polling-example-authenticator-1.0.0-SNAPSHOT.jar "$PLUGIN_DIR/"
 cp target/lib/guava-33.4.8-jre.jar "$PLUGIN_DIR/"
 
+# Define fragments overrides directory
+TEMPLATE_OVERRIDES_FRAGMENTS_DIR="$IDSVR_HOME/usr/share/templates/overrides/fragments"
+mkdir -p "$TEMPLATE_OVERRIDES_FRAGMENTS_DIR"
+
+# Copy template overrides
+cp src/main/resources/poller-example.vm "$TEMPLATE_OVERRIDES_FRAGMENTS_DIR/"
+
 echo -e "\nAuthenticator deployment completed successfully."
 echo "You can now restart the Curity Identity Server to load the authenticator."
