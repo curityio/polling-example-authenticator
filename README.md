@@ -47,6 +47,3 @@ Start the [mock backend API](https://github.com/curityio/mock-backend-api) by fo
 - [Plugin Development Guide](https://curity.io/docs/idsvr/latest/developer-guide/plugins/index.html#plugin-installation)
 - [Server-Provided Dependencies](https://curity.io/docs/idsvr/latest/developer-guide/plugins/index.html#server-provided-dependencies-1)
 - [Curity.io](https://curity.io/)
-
-> 💡 **Note for Windows users**:  
-> This script requires a Unix-like shell environment (e.g., WSL, Git Bash, or Cygwin) to run. It will not work in PowerShell or Command Prompt as-is.
