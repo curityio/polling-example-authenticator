@@ -34,8 +34,8 @@ public interface PollingPluginConfig extends Configuration
     int getPollMaxWaitTime();
 
     @DefaultInteger(2)
-    @Description("Poll interval (in seconds)")
-    int getPollingInterval();
+    @Description("Initial poll interval (in seconds). The poller includes automatic backoff, increasing the interval by 1 second after every third poll")
+    int getInitialPollingInterval();
 
     @DefaultService
     HttpClient getHttpClient();

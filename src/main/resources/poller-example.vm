@@ -40,6 +40,7 @@
 
 ## Include jQuery fragment
 #parse("fragments/jquery")
+#parse("fragments/logger")
 
 ## Include Curity JavaScript library
 <script src="$_staticResourceRootPath/assets/js/curity.js"></script>
@@ -50,9 +51,10 @@
 
     se.curity.authenticator.polling.start = function () {
         var failed = false;
+        logger.debug("Starting authenticator polling...");
 
         // Log Velocity variables for debugging
-        console.debug("Velocity Variables:", {
+        logger.debug("Velocity Variables:", {
             maxWaitTime: "$_maxWaitTime",
             pollInterval: "$_pollInterval",
             pollUrl: "$!_pollUrl",
@@ -67,19 +69,21 @@
                 failed = true;
                 try {
                     if (error && error.readyState !== 0) {
+                        logger.info("Authentication failed. Redirecting to fail handler");
                         window.location.replace("${_failureUrl}?_errorMessage=" + error);
                     } else {
-                        console.error("Polling failed:", error);
+                        logger.warn("Poller failed: " + JSON.stringify(error));
                         window.location.replace("${failureUrl}?_errorMessage=unknown_error");
                     }
                 } catch (e) {
-                    console.error("Error in failure handler:", e);
+                    logger.error("Error in failure handler:", e);
                 }
             }
         };
 
         // Timeout handler
         const handleTimeout = function () {
+            logger.debug("Poller timed out");
             handleFailure("authTimeout");
         };
 
@@ -88,13 +92,14 @@
             try {
                 const form = document.getElementById("pollingDone");
                 if (form) {
+                    logger.debug("Authentication succeeded, submitting form");
                     form.submit();
                 } else {
-                    console.error("Polling form not found");
+                    logger.warn("Polling form not found");
                     handleFailure("form_not_found");
                 }
             } catch (e) {
-                console.error("Error in success handler:", e);
+                logger.error("Error in success handler:", e);
                 handleFailure(e);
             }
         };
@@ -114,7 +119,7 @@
             // Start polling with initial delay of 2 seconds
             return se.curity.utils.poller.startPolling(2, pollSettings);
         } catch (err) {
-            console.error("Error starting polling:", err);
+            logger.error("Error starting polling:", err);
             handleFailure(err);
         }
     };

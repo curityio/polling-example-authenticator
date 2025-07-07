@@ -68,7 +68,7 @@ public class WaitAuthenticationRequestHandler implements AuthenticatorRequestHan
         _sessionManager = config.getSessionManager();
         _authInfoProvider = config.getAuthenticatorInformationProvider();
         _pollMaxWaitTimeInSeconds = config.getPollMaxWaitTime();
-        _pollIntervalInSeconds = config.getPollingInterval();
+        _pollIntervalInSeconds = config.getInitialPollingInterval();
         _httpClient = config.getHttpClient();
         _json = config.getJson();
         _exceptionFactory = config.getExceptionFactory();
